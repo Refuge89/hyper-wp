@@ -1,3 +1,3 @@
 <?php
 
-define("HWP_PATH_CONF", HWP_PATH_ROOT."conf/");
+define("HWP_MU_PATH_CONF", HWP_MU_PATH_ROOT."conf/");
