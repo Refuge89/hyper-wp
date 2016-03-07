@@ -11,15 +11,66 @@ function hyper_wp_register_required_plugins() {
 	 */
 	$plugins = array();
 
+	/*
+	array(
+		'name'               => 'TGM Example Plugin', // The plugin name.
+		'slug'               => 'tgm-example-plugin', // The plugin slug (typically the folder name).
+		'source'             => dirname( __FILE__ ) . '/lib/plugins/tgm-example-plugin.zip', // The plugin source.
+		'required'           => true, // If false, the plugin is only 'recommended' instead of required.
+		'version'            => '', // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
+		'force_activation'   => false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch.
+		'force_deactivation' => false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins.
+		'external_url'       => '', // If set, overrides default API URL and points to an external URL.
+		'is_callable'        => '', // If set, this callable will be be checked for availability to determine if a plugin is active.
+	),*/
+
     $plgCore= array(
 		array(
 			'name'      => 'JetPack',
 			'slug'      => 'jetpack',
 			'required'  => true,
-		)
+		),
+		array(
+			'name'      => 'WP Super Cache',
+			'slug'      => 'wp-super-cache',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Advanced Access Manager',
+			'slug'      => 'advanced-access-manager',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Contact Form 7',
+			'slug'      => 'contact-form-7',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Maintenance',
+			'slug'      => 'maintenance',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Wordfence Security',
+			'slug'      => 'wordfence',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'WP Mail SMTP',
+			'slug'      => 'wp-mail-smtp',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'User Role Editor',
+			'slug'      => 'user-role-editor',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Yoast SEO',
+			'slug'      => 'wordpress-seo',
+			'required'  => false,
+		),
 	);
-
-	$plgFullFeaturedWebSite = array();
 
 	$plgCommunity = array(
 		array(
@@ -27,15 +78,54 @@ function hyper_wp_register_required_plugins() {
 			'slug'      => 'wp-ulike',
 			'source'    => 'https://github.com/hyperweb2/wp-ulike/archive/master.zip',
 			'required'  => 'false',
-		)
+			'external_url' => 'https://github.com/hyperweb2/wp-ulike/'
+		),
+		array(
+			'name'		=> 'BuddyPress',
+			'slug'		=> 'buddypress',
+			'required'	=> 'false',
+		),
+		array(
+			'name'		=> 'BBPress',
+			'slug'		=> 'bbpress',
+			'required'	=> 'false',
+		),
+		array(
+			'name'		=> 'WP-Polls',
+			'slug'      => 'wp-polls',
+			'required'  => false,
+		),
 	);
 
+	$plgFullFeaturedWebSite = array(
+		array(
+			'name'      => 'qTranslate X',
+			'slug'      => 'qtranslate-x',
+			'required'  => false,
+		),
+		array(
+			'name'		=> 'WooCommerce',
+			'slug'      => 'woocommerce',
+			'required'  => false,
+		),
+		array(
+			'name'      => 'Contact Form DB',
+			'slug'      => 'contact-form-7-to-database-extension',
+			'required'  => false,
+		),
+	);
+
+	$plugins=array_merge($plugins,$plgCore);
+
 	switch (HWP_INSTALL_MODE) {
-		case "core":
-			$plugins=array_merge($plugins,$plgCore);
+		case "community":
+			$plugins=array_merge($plugins,$plgCommunity);
 		break;
-		default:
-			$plugins=array_merge($plugins,$plgCore);
+		case "full":
+			$plugins=array_merge($plugins,
+				$plgCommunity,
+				$plgFullFeaturedWebSite
+			);
 		break;
 	}
 
