@@ -95,6 +95,11 @@ function hyper_wp_register_required_plugins() {
 			'slug'      => 'wp-polls',
 			'required'  => false,
 		),
+		array(
+			'name'		=> 'Give - WordPress Donation Plugin',
+			'slug'		=> 'give',
+			'required'  => false,
+		)
 	);
 
 	$plgFullFeaturedWebSite = array(
