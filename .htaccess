@@ -1,0 +1,60 @@
+RewriteEngine On
+
+RewriteBase /
+
+SetEnv REWRITEBASE ''
+
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+
+# if conditions cause some issue sometimes 
+# so it's better to use RewriteCond where possible
+# however, this kind of condition is working
+# ( check opcache directive in php_info() )
+<If "%{HTTP_COOKIE} =~ /enable_dev=1/">
+    php_flag opcache.enable Off
+    php_flag apc.cache_by_default Off
+    php_value session.cookie_path /dev/
+    SetEnv REWRITEBASE '/dev/'
+</If>
+
+RewriteCond %{HTTP_COOKIE} enable_dev=1
+RewriteCond %{REQUEST_URI} !^/dev/
+RewriteRule ^(.*)$ /dev/$1 [L]
+
+
+RewriteCond %{HTTPS} =on
+RewriteRule ^(.*)$ - [env=proto:https]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ - [env=proto:http]
+
+
+# Yoast SEO - XML Sitemap Rewrite Fix
+RewriteRule ^sitemap_index.xml$ /index.php?sitemap=1 [L]
+RewriteRule ^locations.kml$ /index.php?sitemap=wpseo_local_kml [L]
+RewriteRule ^geo_sitemap.xml$ /index.php?sitemap=geo [L]
+RewriteRule ^([^/]+?)-sitemap([0-9]+)?.xml$ /index.php?sitemap=$1&sitemap_n=$2 [L]
+RewriteRule ^([a-z]+)?-?sitemap.xsl$ /index.php?xsl=$1 [L]
+# END Yoast SEO - XML Sitemap Rewrite Fix
+
+
+#
+# WORDPRESS
+#
+
+RewriteRule ^index\.php$ - [L]
+
+# add a trailing slash to /wp-admin
+RewriteRule ^([_0-9a-zA-Z-]+/)?wp-admin$ $1wp-admin/ [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^([_0-9a-zA-Z-]+/)?(wp-(content|admin|includes).*) ${ENV:REWRITEBASE}/modules/wp/$2 [L]
+
+RewriteRule ^([_0-9a-zA-Z-]+/)?(.*\.php)$ ${ENV:REWRITEBASE}/modules/wp/$2 [L]
+
+RewriteRule . index.php [L]
+
+UnsetEnv REWRITEBASE

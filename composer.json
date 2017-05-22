@@ -1,0 +1,9 @@
+{
+    "config": {
+        "vendor-dir": "modules/php_modules"
+    },
+    "require": {
+        "erusev/parsedown": "^1.6"
+    },
+    "minimum-stability": "dev"
+}
